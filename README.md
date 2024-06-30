@@ -1,66 +1,66 @@
 # Twitter Sentiment Data Preprocessing
-Project ini mendemonstrasikan proses preprocessing data twitter untuk keperluan sentiment analysis
+This project demonstrates the process of preprocessing Twitter data for sentiment analysis purposes
 
 ## Dataset Overview
-Dataset Sentiment 140 memuat 1,6 juta tweet yang diekstraksi menggunakan twitter API. Data dianotasi dengan label 0 yang mengindikasikan negatif dan 4 yang mengindikasikan positif. Dataset ini terdiri dari 6 kolom :
-- target : Sentiment
+The Sentiment 140 dataset contains 1.6 million tweets extracted using the Twitter API. Data is annotated with labels 0 which indicates negative and 4 which indicates positive. This dataset consists of 6 columns:
+- target: Sentiment
 - ids : Tweet ID
-- date : Tanggal tweet
+- date: Tweet date
 - flag : Query Flag
-- user : Username penulis tweet
-- text : Teks tweet
+- user : Username of the tweet author
+- text: Tweet text
 
-Sumber : Go, A., Bhayani, R. and Huang, L., 2009. Twitter sentiment classification using distant supervision. CS224N Project Report, Stanford, 1(2009), p.12. [(Download Paper)](https://www-cs.stanford.edu/people/alecmgo/papers/TwitterDistantSupervision09.pdf)
+Source: Go, A., Bhayani, R. and Huang, L., 2009. Twitter sentiment classification using distant supervision. CS224N Project Report, Stanford, 1(2009), p.12. [(Download Paper)](https://www-cs.stanford.edu/people/alecmgo/papers/TwitterDistantSupervision09.pdf)
 
 Download Dataset : [Kaggle](https://www.kaggle.com/datasets/kazanova/sentiment140)
 
 
 ## Text Preprocessing
 
-Langkah awal dalam project ini adalah melakukan teks preprocessing dari data yang ada. Setelah dataset dimuat dilakukan beberapa penyesuaian antara lain:
-1. Hanya memilih kolom yang relevan yaitu kolom `text` sebagai data tweet yang akan dianalisa dan kolom `target` yang merupakan sentiment untuk diprediksi.
-2. Mengganti label untuk sentiment positif dari 4 menjadi 1, sehingga hasil akhir label yang akan diprediksi adalah 0 untuk negatif dan 1 untuk positif.
+The initial step in this project is to carry out text preprocessing from existing data. After the dataset is loaded, several adjustments are made, including:
+1. Only select the relevant columns, namely the `text` column as the tweet data to be analyzed and the `target` column which is the sentiment to be predicted.
+2. Change the label for positive sentiment from 4 to 1, so that the final predicted label result is 0 for negative and 1 for positive.
 
-Selanjutnya adalah melakukan data cleaning untuk memastikan data yang diproses oleh machine learning adalah data yang bersih dan tidak banyak noise. Berikut tahapan preprocessing yang dilakukan.
-1. **Menghapus URL**
-2. **Menghapus Username**
-3. **Menghapus Hashtag**
-4. **Menghapus Tanda Baca**
-5. **Konversi ke Huruf Kecil**
-6. **Tokenisasi** : Memecah teks menjadi token kata-kata individual.
-7. **Menghapus Stopwords** : Menghapus kata-kata umum seperti kata sambung (misalnya, "the", "is", "in").
-8. **Stemming**: Mengubah kata ke dalam bentuk dasarnya.
+The next step is to carry out data cleaning to ensure that the data processed by machine learning is clean and does not contain a lot of noise. The following are the preprocessing stages carried out.
+1. **Removing URL**
+2. **Deleting Username**
+3. **Deleting Hashtags**
+4. **Removing Punctuation**
+5. **Convert to Lowercase**
+6. **Tokenization** : Breaking down text into individual word tokens.
+7. **Deleting Stopwords** : Removes common words such as conjunctions (for example, "the", "is", "in").
+8. **Stemming**: Changes words into their basic forms.
 
 ## Text Vectorizing
-Pada tahap ini dilakukan proses mengubah teks menjadi representasi numerik. Bentuk data yang numerik akan memudahkan machine learning untuk melakukan pemrosesan model. Untuk tahap ini, digunakan metode TF-IDF yang biasa diterapkan untuk menilai seberapa penting sebuah kata dalam sebuah dokumen relatif terhadap sekumpulan dokumen (corpus). TF-IDF merupakan hasil perkalian Term Frequency (TF) dan Inverse Document Frequency (IDF).
+At this stage, the process of converting text into a numerical representation is carried out. The numeric form of data will make it easier for machine learning to carry out model processing. For this stage, the TF-IDF method is used which is usually applied to assess how important a word in a document is relative to a collection of documents (corpus). TF-IDF is the result of multiplying Term Frequency (TF) and Inverse Document Frequency (IDF).
 
 **Term Frequency (TF)**
 
-Term Frequency (TF) mengukur seberapa sering sebuah kata muncul dalam sebuah dokumen. 
+Term Frequency (TF) measures how often a word appears in a document.
 
-$$ \text{TF}(t, d) = \frac{\text{Jumlah kemunculan kata } t \text{ dalam dokumen } d}{\text{Jumlah total kata dalam dokumen } d} $$
+$$ \text{TF}(t, d) = \frac{\text{Number of occurrences of word } t \text{ in document } d}{\text{Total number of words in document } d} $$
 
 **Inverse Document Frequency (IDF)**
 
-Inverse Document Frequency (IDF) mengukur seberapa penting sebuah kata di dalam seluruh corpus. 
+Inverse Document Frequency (IDF) measures how important a word is in the entire corpus.
 
 $$ \text{IDF}(t, D) = \log \left( \frac{N}{|\{d \in D : t \in d\}|} \right) $$
 
-Di mana:
-- \( N \) adalah jumlah total dokumen dalam corpus.
-- $(|\{d \in D : t \in d\}|)$ adalah jumlah dokumen yang mengandung kata \( t \).
+Where:
+- \( N \) is the total number of documents in the corpus.
+- $(|\{d \in D : t \in d\}|)$ is the number of documents containing the word \( t \).
 
 **TF-IDF**
 
-TF-IDF adalah hasil perkalian dari TF dan IDF.
+TF-IDF is the product of TF and IDF.
 
 $$ \text{TF-IDF}(t, d, D) = \text{TF}(t, d) \times \text{IDF}(t, D) $$
 
-Di mana:
-- \( t \) adalah kata tertentu.
-- \( d \) adalah dokumen tertentu dalam corpus.
-- \( D \) adalah seluruh corpus dokumen.
+Where:
+- \( t \) is a specific word.
+- \( d \) is a specific document in the corpus.
+- \( D \) is the entire corpus of documents.
 
 
 ## Text Splitting
-Untuk memungkinkan evaluasi model secara lebih objektif. Dilakukan teks splitting dengan membagi data keseluruhan menjadi 80% untuk training dan 20% testing. Adanya data testing yang tidak digunakan untuk pelatihan berguna untuk memberikan gambaran akurasi prediksi model yang belum pernah dilihat sebelumnya.
+To allow a more objective evaluation of the model. Text splitting was carried out by dividing the overall data into 80% for training and 20% testing. The presence of testing data that is not used for training is useful for providing an overview of the model's prediction accuracy that has never been seen before.
