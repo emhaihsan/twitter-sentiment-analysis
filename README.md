@@ -1,5 +1,5 @@
-# Twitter Sentiment Analysis
-Project ini mendemonstrasikan proses sentiment analysis menggunakan data twitter
+# Twitter Sentiment Preprocessing
+Project ini mendemonstrasikan proses preprocessing data twitter untuk keperluan sentiment analysis
 
 ## Dataset Overview
 Dataset Sentiment 140 memuat 1,6 juta tweet yang diekstraksi menggunakan twitter API. Data dianotasi dengan label 0 yang mengindikasikan negatif dan 4 yang mengindikasikan positif. Dataset ini terdiri dari 6 kolom :
